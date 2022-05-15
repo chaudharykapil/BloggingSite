@@ -1,0 +1,106 @@
+{%extends 'base.html'%}
+{%block title %}Dashboard-Admin{%endblock%}
+{% block heading%}
+
+Dashboard-Admin{%endblock%}
+{% block subheading%}Edit Posts{%endblock%}
+{% block bgimg %}<header class="masthead" style="background-image: url('{{ url_for('static',filename = 'img/about-bg.jpg')}}')">{% endblock %}
+
+{%block body %}
+
+<select id="option">
+  <option value="post">post</option>
+  <option value="offer">offer</option>
+</select>
+<script src="{{url_for('static',filename = 'vendor2/jquery/jquery-3.2.1.min.js')}}"></script>
+<script type="text/javascript">
+  $(document).ready(set())
+  function set(){
+  $('#option').change(()=>{
+    var opt = $('#option option:selected').val()
+    if (opt == 'post'){
+      $('#postdiv').css('visibility','visible')
+      $('#offerdiv').css('visibility','hidden')
+      $('#postdiv').css('height','initial')
+      $('#offerdiv').css('height','0px')
+    }
+    else if(opt == 'offer'){
+      $('#offerdiv').css('visibility','visible')
+      $('#postdiv').css('visibility','hidden')
+      $('#postdiv').css('height','0px')
+      $('#offerdiv').css('height','initial')
+    }
+  })
+}
+</script>
+<div class="container" id="postdiv" style="visibility: visible;">            
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Sno</th>
+          <th>Heading</th>
+          <th>Date</th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th><a href="/offer/addoffer"><button class="btn btn-primary">Add Offer</button></a></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for pst in post %}
+        <tr>
+          <td>{{pst.sno}}</td>
+          <td><a href = '/post/{{pst.post_link}}'>{{pst.title}}</a></td>
+          <td>{{pst.dt}}</td>
+          <td><a href = '/post/editpost?post_no={{pst.sno}}'><button class="btn btn-primary">Edit</button></td></a>
+          <td><a href = '/post/delete-post/{{pst.sno}}'><button class="btn btn-primary">Delete</button></td></a>
+          {%if not pst.suspend%}
+          <td><a href = '/post/suspend/{{pst.sno}}'><button class="btn btn-primary">Suspend</button></td></a>
+          {%endif%}
+          {%if pst.suspend%}
+          <td><a href = '/post/resume/{{pst.sno}}'><button class="btn btn-primary">Resume</button></td></a>
+          {%endif%}
+        </tr>
+        {%endfor%}
+      </tbody>
+    </table>
+  </div>
+
+
+
+
+
+
+
+
+
+  <div class="container" id="offerdiv" style="visibility: hidden;">            
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Sno</th>
+          <th>Name</th>
+          <th>No of post</th>
+          <th>price</th>
+          <th>discount</th>
+          <th></th>
+          <th></th>
+          <th><a href="/offer/addoffer"><button class="btn btn-primary">Add Offer</button></a></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for offer in offers %}
+        <tr>
+          <td>{{offer.offer_id}}</td>
+          <td>{{offer.offername}}</td>
+          <td>{{offer.no_of_post}}</td>
+          <td>{{offer.price}}</td>
+          <td>{{offer.discount}}</td>
+          <td><a href = '/offer/editoffer?offer_id={{offer.offer_id}}'><button class="btn btn-primary">Edit</button></td></a>
+          <td><a href = '/offer/delete-offer/{{offer.offer_id}}'><button class="btn btn-primary">Delete</button></td></a>
+        </tr>
+        {%endfor%}
+      </tbody>
+    </table>
+  </div>
+{%endblock%}

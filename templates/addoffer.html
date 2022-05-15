@@ -1,0 +1,32 @@
+<html>
+    <head>
+    </head>
+    <body>
+        {%if not offer%}
+        <form method="POST",action='/offer/addoffer'>
+            <h1>Offer Name</h1>
+            <textarea rows="3" cols="40" name="name" required></textarea>
+            <h1>No of post in package</h1>
+            <input type="number" name="no_of_post" required>
+            <h1>Discount</h1>
+            <input type="number" name="discount" required>
+            <h1>Price</h1>
+            <input type="number" name="price" required>
+            <button type="submit">Add</button>
+        </form>
+        {%endif%}
+        {%if offer%}
+        <form method="POST" action='/offer/changeoffer/{{offer.offer_id}}'>
+            <h1>Offer Name</h1>
+            <textarea rows="3" cols="40" name="name" required>{{offer.offername}}</textarea>
+            <h1>No of post in package</h1>
+            <input type="number" name="no_of_post" required value="{{offer.no_of_post}}">
+            <h1>Discount</h1>
+            <input type="number" name="discount" value="{{offer.discount}}">
+            <h1>Price</h1>
+            <input type="number" name="price" required value="{{offer.price}}">
+            <button type="submit">Update</button>
+        </form>
+        {%endif%}
+    </body>
+</html>

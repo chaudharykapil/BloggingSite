@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <!--  This file has been downloaded from https://bootdey.com  -->
+    <!--  All snippets are MIT license https://bootdey.com/license -->
+    <title>Setting</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="{{url_for('static',filename = 'vendor2/jquery/jquery-3.2.1.min.js')}}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <link href="{{url_for('static',filename = 'booty/bootstrap.min.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="{{url_for('static',filename = 'css/setting_style.css')}}">
+</head>
+<body>
+    {%with messages = get_flashed_messages() %}
+	{%if messages %}
+	{%for mess in messages %}
+	<div class="alert alert-success alert-dismissible" role="alert">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<strong>Success</strong> {{mess}}
+	  </div>
+	{%endfor%}
+	{%endif%}
+	{%endwith%}
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="container">
+<div class="row">
+    <div class="col-sm-8 col-sm-offset-2">
+        <div class="panel panel-white profile-widget">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="image-container bg2"> 
+                        <img src="{{url_for('uploadfolder',filename=user.profile_pic)}}" class="avatar" style="margin: 0 auto 0px;" alt="avatar" />
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="details">
+                        <h4>{{user.name}} <i class="fa fa-sheild"></i></h4>
+                        <div>Works at Bootdey.com</div>
+                        <div>Attended University of Bootdey.com</div>
+                        <div>Bootdey Land</div> 
+                        <div class="mg-top-10">
+                            <a href="/user/setting/subscriber" class="btn btn-blue">Followers</a>
+                            <a href="/user/setting/subscription" class="btn btn-green">Following</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        
+        <div class="row">
+            
+            <div class="col-sm-6" style="margin-left: 50px;margin-right: 50px;">                
+                <div class="panel panel-white border-top-purple" style="width: 350px;margin-left: -50px;">
+                   <div class="panel-heading">
+                        <h3 class="panel-title">My Story</h3>
+                        <div class="controls pull-right">
+                            <span class="pull-right clickable">
+                                <i class="fa fa-chevron-up"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="panel-body"> 
+                        <div class="body-section">
+                            <h5 class="section-heading">About</h5>
+                            <p class="section-content">{{usrdetail.about}}</p>
+                        </div>
+                        <div class="body-section">
+                            <h5 class="section-heading">Introduction</h5>
+                            <p class="section-content">{{usrdetail.intro}}</p>
+                        </div>
+                        <div class="body-section">
+                            <a href="/user/setting/change_setting/story" class="btn btn-purple btn-sm">Edit</a>
+                        </div>
+                    </div>
+                </div>
+                  
+            <div class="col-sm-6">
+                 
+                <div class="panel panel-white border-top-green" style="width: 350px;margin-left: -60px;"">
+                   <div class="panel-heading">
+                        <h3 class="panel-title">User Info</h3>
+                        <div class="controls pull-right">
+                            <span class="pull-right clickable">
+                                <i class="fa fa-chevron-up"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="panel-body"> 
+                        <div class="body-section">
+                            <h5 class="section-heading">Name</h5>
+                            <p class="section-content">{{user.name}}</p>
+                        </div>
+                        <div class="body-section">
+                            <h5 class="section-heading">Education</h5>
+                            <p class="section-content"></p>
+                        </div>
+                        <div class="body-section">
+                            <h5 class="section-heading">Telephone</h5>
+                            <p class="section-content">{{usrdetail.telephone}}</p>
+                        </div>
+                        <div class="body-section">
+                            <h5 class="section-heading">Email</h5>
+                            <p class="section-content">{{user.email}}</p>
+                        </div>
+                        <div class="body-section">
+                            <h5 class="section-heading">Post Available</h5>
+                            {%if user.available_post == -1%}
+                            <p class="section-content">Infinite</p>
+                            {%else%}
+                            <p class="section-content">{{user.available_post}}</p>
+                            {%endif%}
+                        </div>
+                        <div class="body-section">
+                            <a href="/user/setting/change_setting/info" class="btn btn-green btn-sm">Edit</a>
+                        </div>
+                    </div>
+                </div>
+                 
+                <div class="panel panel-white border-top-orange" style="width: 350px;margin-left: -60px;"">
+                   <div class="panel-heading">
+                        <h3 class="panel-title">Social Statistics</h3>
+                        <div class="controls pull-right">
+                            <span class="pull-right clickable">
+                                <i class="fa fa-chevron-up"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="panel-body"> 
+                        <div class="body-section">
+                            <h5 class="section-heading">Followers</h5>
+                            <p class="section-content">{{subscribr}}</p>
+                        </div>
+                        <div class="body-section">
+                            <h5 class="section-heading">Posts</h5>
+                            <p class="section-content">{{no_of_pst}}</p>
+                        </div> 
+                        <div class="body-section">
+                            <h5 class="section-heading">Following</h5>
+                            <p class="section-content">{{subscrptn}}</p>
+                        </div>
+                        <div class="body-section">
+                            <h5 class="section-heading">Facebook</h5>
+                            <p class="section-content"><a href="{{usrdetail.facebook}}">{{usrdetail.facebook}}</a></p>
+                        </div>
+                        <div class="body-section">
+                            <h5 class="section-heading">Twitter</h5>
+                            <p class="section-content"><a href="{{usrdetail.twitter}}">{{usrdetail.twitter}}</a></p>
+                        </div>
+                        <div class="body-section">
+                            <h5 class="section-heading">Instagram</h5>
+                            <p class="section-content"><a href="{{usrdetail.instagram}}">{{usrdetail.instagram}}</a></p>
+                        </div>  
+                    </div>
+                    
+                </div>
+                <div class="body-section">
+                    <a href="/" class="btn btn-purple btn-sm">Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<script src="{{url_for('static',filename = 'booty/bootstrap.min.js')}}"></script>
+</body>
+</html>

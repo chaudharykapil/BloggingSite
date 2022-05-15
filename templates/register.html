@@ -1,0 +1,67 @@
+{%extends 'base.html'%}
+{%block heading%}
+
+<form name="sentMessage" id="contactForm" novalidate method="POST" action="/user/register">
+    <div class="control-group">
+      <div class="form-group floating-label-form-group controls">
+        <label>Name</label>
+        <input type="text" required name="name" class="form-control" placeholder="Name" id="name" required data-validation-required-message="Please enter your name.">
+        <p class="help-block text-danger"></p>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="form-group floating-label-form-group controls">
+        <label>Email Address</label>
+        <input type="email" required name="email" class="form-control" placeholder="Email Address" id="email" required data-validation-required-message="Please enter your email address.">
+        <p class="help-block text-danger"></p>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="form-group col-xs-12 floating-label-form-group controls">
+        <label>Password</label>
+        <input type="password" required name="pass1" id="pass1" class="form-control" placeholder="Password" id="phone" required data-validation-required-message="Please enter your password.">
+        <p class="help-block text-danger"></p>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="form-group floating-label-form-group controls">
+        <label>Confirm Password</label>
+        <input type="password" required name="pass2" id="pass2" class="form-control" placeholder="Confirm Password" id="message" required data-validation-required-message="Password Do Not Match">
+        <p class="help-block text-danger"></p>
+      </div>
+    </div>
+    <br>
+    <div id="success"></div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary" id="sendMessageButton">Sign Up</button>
+    </div>
+</form>
+
+{%endblock%}
+{%block subheading%}{%endblock%}
+{% block title %}{% endblock %}
+{% block bgimg %}<header class="masthead" style="background-image: url('{{ url_for('static',filename = 'img/register-bg.jpg')}}')">{%endblock%}
+{%block body%}
+{%if message%}
+    <div class="alert alert-danger" role="alert">
+        {{message}}
+    </div>
+{%endif%}
+
+<!--
+<script type="text/javascript">
+  $(document).ready(function (){
+    $('#pass2').change(function (){
+      var pass1 = $('#pass1').val()
+      if ($('#pass2').val() != pass1){
+        console.log(pass1)
+        $('#pass2').css('font-color','red')
+      }
+      else{
+        $('#pass2').css('font-color','white')
+      }
+    })
+  })
+</script>
+-->
+{%endblock%}

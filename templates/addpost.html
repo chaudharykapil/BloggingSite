@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block heading %}
+Add New Post{% endblock %}
+{% block subheading%}Let The World Know Your Thoughts{% endblock %}
+{% block title %}{% endblock %}
+{% block bgimg %}<header class="masthead" style="background-image: url('{{ url_for('static',filename = 'img/addpost-bg.jpg')}}')">{% endblock %}
+{% block  body %}
+{%if not content%}
+<form action="/post/addpost" method="POST" id="second_form" style="visibility: visible;">
+  <div>
+    <h1>Title</h1>
+    <textarea name="title" cols="50" rows="1"></textarea>
+  </div>
+  <div>
+    <h1>Subtitle</h1>
+    <textarea name="subtitle" cols="50" rows="1"></textarea>
+  </div>
+  <div>
+    <h1>Heading</h1>
+    <textarea name="head" cols="50"></textarea>
+    <h1>Content</h1>
+    <textarea name="cont" cols="100" rows="10"></textarea>
+    <hr>
+  </div>
+  <button type="submit" id="btn">Post</button>
+  <button type="button" onclick="take_post()">Add New Heading</button>
+</form>
+{%endif%}
+<!--this form edit the post-->
+{% if content %}
+<form action="/post/changepost/{{pst.post_link}}" method="POST" id="second_form" style="visibility: visible;">
+  <div>
+    <h1 id='title'>Title</h1>
+    <textarea name="title" cols="50" rows="1">{{pst.title}}</textarea>
+  </div>
+  <div>
+    <h1>Subtitle</h1>
+    <textarea name="subtitle" cols="50" rows="1">{{pst.subtitle}}</textarea>
+  </div>
+  {% for head_cont in content%}
+  <div>
+    <h1>Heading</h1>
+    <textarea name="head" cols="50">{{head_cont[0]}}</textarea>
+    <h1>Content</h1>
+    <textarea name="cont" cols="100" rows="10">{{head_cont[1]}}</textarea>
+    <hr>
+  </div>
+  {%endfor%}
+  <button type="submit" id="btn">Save Changes</button>
+  <button type="button" onclick="take_post()">Add New Heading</button>
+</form>
+{%endif%}
+<script>
+  function take_post(){
+    var div = document.createElement('div')
+    var head = document.createElement('h1')
+    var headent = document.createElement('textarea')
+    var conthead = document.createElement('h1')
+    var cont = document.createElement('textarea')
+    headent.setAttribute('name','head')
+    headent.setAttribute('cols',50)
+    cont.setAttribute('name','cont')
+    cont.setAttribute('cols',100)
+    cont.setAttribute('rows',10)
+    head.innerHTML = 'Heading'
+    conthead.innerHTML = 'Content'
+    div.appendChild(head)
+    div.appendChild(headent)
+    div.appendChild(conthead)
+    div.appendChild(cont)
+    div.appendChild(document.createElement('hr'))
+    document.getElementById('second_form').insertBefore(div,document.getElementById('btn'))
+  }
+</script>
+{% endblock %}

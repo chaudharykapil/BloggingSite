@@ -1,0 +1,50 @@
+{%extends 'base.html'%}
+{% block bgimg %}<header class="masthead" style="background-image: url('{{ url_for('static',filename = 'img/post-bg.jpg')}}')">{% endblock %}
+{%block heading%}
+
+{{pst.title}}{%endblock%}
+{%block subheading%}{{pst.subtitle}}{%endblock%}
+{% block like_dislike_block %}
+<br>
+{% if not liked %}
+<span><a href="/post/{{pst.post_link}}/like"><button type="button" class="btn btn-outline-light">Like:{{pst.total_vote}}</button></a></span>
+
+{% else %}
+<span><a href="/post/{{pst.post_link}}/dislike"><button type="button" class="btn btn-outline-warning">Dislike:{{pst.total_vote}}</button></a></span>
+{% endif %}
+{% if not subscribe%}
+<span><a href="/user/{{pst.post_link}}/{{pst.email}}"><button type="button" class="btn btn-success" >Subscribe:{{total_subs}}</button></a></span>
+<span><button type="button" class="btn btn-danger" disabled>Unsubscribe</button></span>
+{% else %}
+<span><button type="button" class="btn btn-success" disabled>Subscribe:{{total_subs}}</button></span>
+<span><a href="/user/{{pst.post_link}}/remove/{{pst.email}}"><button type="button" class="btn btn-danger">Unsubscribe</button></a></span>
+{%endif%}
+<br>
+<span>Author <a style="color: whitesmoke;" href="/user/profile/{{pst.user}}">{{pst.user}}</a></span>
+
+{%endblock%}
+<!-- Add icon library -->
+
+{% block body%}
+
+
+  <!-- Post Content -->
+  <article>
+    <div class="container">
+      <div class="row">
+        <!-- style white space is used for formatting text -->
+        <div id="container" class="col-lg-8 col-md-10 mx-auto" style = 'white-space: pre-wrap; width:400px; height:auto'>
+          {% for head_cont in content%}
+          <h1>{{head_cont[0]}}</h1>
+          <script type="text/javascript">
+            var para = document.createElement('div')
+            para.innerHTML = `{{head_cont[1]}}`
+            document.getElementById('container').appendChild(para)
+          </script>
+          {%endfor%}
+        </div>
+      </div>
+    </div>
+  </article>
+  <hr>
+{%endblock%}

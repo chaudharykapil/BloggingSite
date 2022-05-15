@@ -1,0 +1,18 @@
+
+<html>
+    <head>
+    </head>
+    <body>
+        <h1>Check Out Page</h1>
+        <h1>Redirecting</h1>
+        <h1>Please don't refresh</h1>
+        <form method="post" action="https://securegw-stage.paytm.in/order/process" name="form">
+            {%for key,value in acc_detl.items() %}
+            <input type="hidden" name="{{key}}"value="{{value}}">
+            {%endfor%}
+            <script type="text/javascript">
+            document.form.submit();
+            </script>
+        </form>
+    </body>
+</html>

@@ -1,0 +1,63 @@
+
+<html>
+    <head>
+      <link href="{{ url_for('static',filename = 'vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+
+  <!-- Custom fonts for this template -->
+  <link href="{{ url_for('static',filename = 'vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
+  <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+  <!-- Custom styles for this template -->
+  <link href="{{ url_for('static',filename = 'css/clean-blog.min.css')}}" rel="stylesheet">
+
+
+   <!-- #bootstarp css and javascript -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    </head>
+    <body>
+
+      {%with messages = get_flashed_messages() %}
+      {%if messages %}
+      {%for mess in messages %}
+      <div class="alert alert-success alert-dismissible" role="alert" style="margin-top: 40px;">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>{{mess}}</strong> 
+        </div>
+      {%endfor%}
+      {%endif%}
+      {%endwith%}
+        <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Offer</th>
+                <th scope="col">Price(INR)</th>
+                <th scope="col">No of Post</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {%for x in range(offers|length)%}
+              <tr>
+                <form method="POST" action="/pay/">
+                <th scope="row">{{x+1}}</th>
+                <td>{{offers[x].offername}}</td>
+                {%if offers[x].discount == 0 %}
+                <td style="color: orange;font-size: 110%;">{{offers[x].price}}</td>
+                {%else%}
+                <td><span style="color: red;text-decoration-line: line-through;">{{offers[x].price}}</span><span style="padding-left: 20px; font-size: 150%;color:lightgreen;">{{offers[x].price-((offers[x].discount/100)*offers[x].price)}}</span></td>
+                {%endif%}
+                <td>{{offers[x].no_of_post}}</td>
+                <input type="hidden" value="{{offers[x].offer_id}}" name="offer_id">
+                <td><button type="submit">Buy</button></td>
+              </form>
+              </tr>
+              {%endfor%}
+            </tbody>
+          </table>
+    </body>
+</html>

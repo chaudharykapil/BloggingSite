@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <!--  This file has been downloaded from https://bootdey.com  -->
+    <!--  All snippets are MIT license https://bootdey.com/license -->
+    <title>Bootdey.com</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <link href="{{url_for('static',filename = 'booty/bootstrap.min.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="{{url_for('static',filename = 'css/setting_style.css')}}">
+    <script src="{{url_for('static',filename = 'vendor2/jquery/jquery-3.2.1.min.js')}}"></script>
+    
+</head>
+<body>
+    <form action="/upload" method="POST" id="form" enctype="multipart/form-data">
+    </form>
+    <script type="text/javascript">
+        function getimage(){
+            var inp = document.createElement('input');
+            inp.setAttribute('type','file')
+            inp.setAttribute('name','profile_pic')
+            document.getElementById('form').appendChild(inp)
+            $(inp).css('visibility','hidden')
+            inp.click()
+            $(inp).change(()=>{
+                $('#form').submit()
+            })
+        }
+    </script>
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="container">
+    <div class="row">
+        <div class="col-sm-8 col-sm-offset-2">
+            <div class="panel panel-white profile-widget">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="image-container bg2">  
+                            <button class="avatar" onclick="getimage()" style="border: hidden; padding: 0px 0px;margin: 0px auto 0px;"><img src="{{url_for('uploadfolder',filename=user.profile_pic)}}" class="avatar" style="margin: 0 auto 0px;" alt="avatar" /></button> 
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="details">
+                            <h4>{{user.name}} <i class="fa fa-sheild"></i></h4>
+                            <div>Works at Bootdey.com</div>
+                            <div>Attended University of Bootdey.com</div>
+                            <div>Bootdey Land</div> 
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            
+            <div class="row">
+                
+                {%if setting == 'story'%}
+                <form method="POST" action="/user/setting/change_setting/{{setting}}">
+                <div class="col-sm-6" style="margin-left: 50px;margin-right: 50px;">                
+                    <div class="panel panel-white border-top-purple">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">My Story</h3>
+                            <div class="controls pull-right">
+                                <span class="pull-right clickable">
+                                    <i class="fa fa-chevron-up"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="panel-body"> 
+                            <div class="body-section">
+                                <h5 class="section-heading">About</h5>
+                                <textarea name="about" rows="5" cols="40" style="width: 100%;" class="section-content">{{detail['about']}}</textarea>
+                            </div>
+                            <div class="body-section">
+                                <h5 class="section-heading">Introduction</h5>
+                                <textarea name="intro" rows="5" cols="40" style="width: 100%;" class="section-content">{{detail['intro']}}</textarea>
+                            </div>
+                            
+                            <div class="body-section">
+                                <button type="submit" class="btn btn-purple btn-sm">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                    {%endif%}
+                    {%if setting == 'info'%}
+                    <form method="POST" action="/user/setting/change_setting/{{setting}}">
+                <div class="col-sm-6">
+                        
+                    <div class="panel panel-white border-top-green" style="width: 350px;">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">User Info</h3>
+                            <div class="controls pull-right">
+                                <span class="pull-right clickable">
+                                    <i class="fa fa-chevron-up"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="panel-body"> 
+                            <div class="body-section">
+                                <h5 class="section-heading">Name</h5>
+                                <input type="text" name="name" value="{{user.name}}" cols="50" rows="5" class="section-content">
+                            </div>
+                            <div class="body-section">
+                                <h5 class="section-heading">Telephone</h5>
+                                <input type="tel" name="tele" cols="50" rows="5" value="{{detail['telephone']}}" class="section-content">
+                            </div>  
+                            <div class="body-section">
+                                <h5 class="section-heading">Facebook</h5>
+                                <textarea name="facebook" style="width: 100%;" rows="2" cols="40" class="section-content">{{detail['facebook']}}</textarea>
+                            </div>
+                            <div class="body-section">
+                                <h5 class="section-heading">Twitter</h5>
+                                <textarea name="twitter" style="width: 100%;" rows="2" cols="40" class="section-content">{{detail['twitter']}}</textarea>
+                            </div>
+                            <div class="body-section">
+                                <h5 class="section-heading">Instagram</h5>
+                                <textarea name="instagram" style="width: 100%;" rows="2" cols="40" class="section-content">{{detail['instagram']}}</textarea>
+                            </div>
+                            <div class="body-section">
+                                <button type="submit" class="btn btn-green btn-sm">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                    </form>
+                    {%endif%}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{{url_for('static',filename = 'booty/bootstrap.min.js')}}"></script>
+<script type="text/javascript">
+</script>
+</body>
+</html>

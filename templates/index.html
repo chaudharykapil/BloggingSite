@@ -1,0 +1,42 @@
+{% extends 'base.html'%}
+
+{%block heading%}
+
+Welcome To Silicon Valley{%endblock%}
+{%block subheading %}Future Is Here{%endblock%}
+{% block title %}{% endblock %}
+{% block bgimg %}<header class="masthead" style="background-image: url('{{ url_for('static',filename = 'img/home-bg.jpg')}}')">{% endblock %}
+{%block body %}
+
+  <!-- Main Content -->
+  
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        {% for post in posts%}
+        <div class="post-preview">
+          <a href="/post/{{post.post_link}}">
+            <h2 class="post-title">
+              {{post.title}}
+            </h2>
+            <h3 class="post-subtitle">
+              {{post.subtitle}}
+            </h3>
+          </a>
+          <p class="post-meta">Posted by
+            <a href="/user/profile/{{post.user}}">{{post.user}}</a>
+            {{post.dt}}</p>
+        </div>
+        <hr>
+        {%endfor%}
+        <!-- Pager -->
+        <div class="clearfix">
+          <a class="btn btn-primary float-right" style="width: 25%; font-size: 80%;" href="/?page={{next}}">Older Posts &rarr;</a>
+          <a class="btn btn-primary float-left" style="width: 30%; font-size: 80%;" href="/?page={{prev}}">&larr; previous Posts</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+{%endblock%}
