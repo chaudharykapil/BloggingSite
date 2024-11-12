@@ -1,11 +1,11 @@
 from flask import request,url_for,render_template,redirect,session,abort,flash,Blueprint
-from flask_sqlalchemy import SQLAlchemy
 import datetime
+import re
+from utils.DBManager import db as postdb,Offers,Post,Subscriber,Subscription,User,UserDetail,UserVote
 app = Blueprint("post",'postApp',static_folder='static',template_folder='templates')
-postdb = SQLAlchemy()
 
 def make_link(title):
-    allword = title.replace(' ','_')
+    allword = re.sub(r'[^a-zA-Z0-9]', '-', title)
     link = allword+'-post'
     return link
 def create_json(heading:list,content:list):
@@ -33,66 +33,6 @@ def is_subscribed(user,channel):
         if subs == channel.user_id:
             return True
     return False
-class Post(postdb.Model):
-    __tablename__ = "post"
-    sno = postdb.Column(postdb.Integer,primary_key = True,nullable = False)
-    title = postdb.Column(postdb.String(100),nullable = False)
-    subtitle = postdb.Column(postdb.String(50),nullable = True)
-    content = postdb.Column(postdb.Text())
-    email = postdb.Column(postdb.String(30),nullable = False)
-    dt = postdb.Column(postdb.String(30),nullable = True)
-    post_link = postdb.Column(postdb.String(100),nullable = False)
-    user = postdb.Column(postdb.String(50))
-    total_vote = postdb.Column(postdb.Integer,nullable = False)
-    suspend = postdb.Column(postdb.Boolean(),nullable = False)
-class User(postdb.Model):
-    __tablename__ = 'user'
-    user_id = postdb.Column(postdb.Integer,primary_key = True,nullable = False)
-    name = postdb.Column(postdb.String(30),nullable = False)
-    email = postdb.Column(postdb.String(30),nullable = False)
-    password = postdb.Column(postdb.String(100),nullable = False)
-    admin = postdb.Column(postdb.Boolean,nullable = False)
-    profile_pic = postdb.Column(postdb.String(100),nullable = False)
-    available_post = postdb.Column(postdb.Integer,nullable = False)
-class UserDetail(postdb.Model):
-    __tablename__ = 'userdetail'
-    email = postdb.Column(postdb.String(30),nullable = False,primary_key=True)
-    about = postdb.Column(postdb.Text())
-    intro = postdb.Column(postdb.Text())
-    telephone = postdb.Column(postdb.Text())
-    facebook = postdb.Column(postdb.Text())
-    instagram = postdb.Column(postdb.Text())
-    twitter = postdb.Column(postdb.Text())
-class UserVote(postdb.Model):
-    __tablename__ = 'uservote'
-    user_id = postdb.Column(postdb.Integer,primary_key = True,nullable = False)
-    email = postdb.Column(postdb.String(30),nullable = False)
-    upvote_post = postdb.Column(postdb.Text())
-class Subscriber(postdb.Model):
-    '''
-    #subscriber handle all the user which subscribe that channel
-    '''
-    __tablename__ = 'subscriber'
-    user_id = postdb.Column(postdb.Integer,primary_key = True)
-    email = postdb.Column(postdb.String(30),nullable = False)
-    no_of_subscrbs = postdb.Column(postdb.Integer,nullable = False)
-    subscribers = postdb.Column(postdb.Text())
-class Subscription(postdb.Model):
-    '''
-    #subscription handle all the channel which has been subscribed by user
-    '''
-    __tablename__ = 'subscription'
-    user_id = postdb.Column(postdb.Integer,primary_key = True)
-    email = postdb.Column(postdb.String(30),nullable = False)
-    no_of_subscrptn = postdb.Column(postdb.Integer,nullable = False)
-    subscriptions = postdb.Column(postdb.Text())
-class Offers(postdb.Model):
-    __tablename__='offer'
-    offer_id = postdb.Column(postdb.Integer,primary_key=True)
-    offername = postdb.Column(postdb.Text())
-    no_of_post = postdb.Column(postdb.Integer,nullable=False)
-    price = postdb.Column(postdb.Integer,nullable=False)
-    discount = postdb.Column(postdb.Float)
 @app.route('/addpost',methods = ['GET','POST'])
 def addpost():
     usr = None
@@ -129,6 +69,7 @@ def post(post_link):
     subscribe = None
     usr = None
     pst = Post.query.filter_by(post_link = post_link,suspend = False).first()
+    print(pst)
     username = pst.email
     if 'user' in session:
         usr = User.query.filter_by(email = session['user']).first()

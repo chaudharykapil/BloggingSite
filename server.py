@@ -1,30 +1,21 @@
 from flask import Flask,request,url_for,render_template,redirect,session,abort,flash,send_from_directory
-from flask_sqlalchemy import SQLAlchemy
 import math,os,random
-from post.init import app as postapp,postdb
-from offer.init import app as offerapp,db as offerdb
-from user.init import app as userapp,db as userdb 
-from user.user_setting.init import app as settingapp,db as settingdb
-#from paytm.init import app as paytmapp,db as paytmdb
-DATABASE_NAME = 'root'
-DATABASE_PASS = 'kapil'
-HOST = 'localhost'
-#HOST = 'kapil829.pythonanywhere.com'
+from post.init import app as postapp
+from offer.init import app as offerapp
+from user.init import app as userapp
+from user.user_setting.init import app as settingapp
+from utils.DBManager import db,Offers,Post,Subscriber,Subscription,User,UserDetail,UserVote
+basedir = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://'+DATABASE_NAME+':'+DATABASE_PASS+'@'+HOST+'/final_blog'
-
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'database.db')
 app.config['SECRET_KEY'] = '#youcantgowithouthackthis12129090883434####'
-db = SQLAlchemy(app)
+db.init_app(app=app)
 app.register_blueprint(postapp,url_prefix = '/post')
-postdb.__init__(app)
 app.register_blueprint(userapp,url_prefix = '/user')
-userdb.__init__(app)
 app.register_blueprint(settingapp,url_prefix = '/user/setting')
-settingdb.__init__(app)
 app.register_blueprint(offerapp,url_prefix = '/offer')
-offerdb.__init__(app)
-#app.register_blueprint(paytmapp,url_prefix = '/pay')
-#paytmdb.__init__(app)
+
+
 app.config['UPLOAD_FOLDER'] = os.path.join(os.path.dirname(__file__), 'static\\profile_pic')
 def deletepic(filename):
     try:
@@ -32,66 +23,6 @@ def deletepic(filename):
         return True
     except:
         return False
-class Post(db.Model):
-    __tablename__ = "post"
-    sno = db.Column(db.Integer,primary_key = True,nullable = False)
-    title = db.Column(db.String(100),nullable = False)
-    subtitle = db.Column(db.String(50),nullable = True)
-    content = db.Column(db.Text())
-    email = db.Column(db.String(30),nullable = False)
-    dt = db.Column(db.String(30),nullable = True)
-    post_link = db.Column(db.String(100),nullable = False)
-    user = db.Column(db.String(50))
-    total_vote = db.Column(db.Integer,nullable = False)
-    suspend = db.Column(db.Boolean(),nullable = False)
-class User(db.Model):
-    __tablename__ = 'user'
-    user_id = db.Column(db.Integer,primary_key = True,nullable = False)
-    name = db.Column(db.String(30),nullable = False)
-    email = db.Column(db.String(30),nullable = False)
-    password = db.Column(db.String(100),nullable = False)
-    admin = db.Column(db.Boolean,nullable = False)
-    profile_pic = db.Column(db.String(100),nullable = False)
-    available_post = db.Column(db.Integer,nullable = False)
-class UserDetail(db.Model):
-    __tablename__ = 'userdetail'
-    email = db.Column(db.String(30),nullable = False,primary_key=True)
-    about = db.Column(db.Text())
-    intro = db.Column(db.Text())
-    telephone = db.Column(db.Text())
-    facebook = db.Column(db.Text())
-    instagram = db.Column(db.Text())
-    twitter = db.Column(db.Text())
-class UserVote(db.Model):
-    __tablename__ = 'uservote'
-    user_id = db.Column(db.Integer,primary_key = True,nullable = False)
-    email = db.Column(db.String(30),nullable = False)
-    upvote_post = db.Column(db.Text())
-class Subscriber(db.Model):
-    '''
-    #subscriber handle all the user which subscribe that channel
-    '''
-    __tablename__ = 'subscriber'
-    user_id = db.Column(db.Integer,primary_key = True)
-    email = db.Column(db.String(30),nullable = False)
-    no_of_subscrbs = db.Column(db.Integer,nullable = False)
-    subscribers = db.Column(db.Text())
-class Subscription(db.Model):
-    '''
-    #subscription handle all the channel which has been subscribed by user
-    '''
-    __tablename__ = 'subscription'
-    user_id = db.Column(db.Integer,primary_key = True)
-    email = db.Column(db.String(30),nullable = False)
-    no_of_subscrptn = db.Column(db.Integer,nullable = False)
-    subscriptions = db.Column(db.Text())
-class Offers(db.Model):
-    __tablename__='offer'
-    offer_id = db.Column(db.Integer,primary_key=True)
-    offername = db.Column(db.Text())
-    no_of_post = db.Column(db.Integer,nullable=False)
-    price = db.Column(db.Integer,nullable=False)
-    discount = db.Column(db.Float)
 @app.route('/')
 def home():
     no_of_post = 4
@@ -168,6 +99,9 @@ def uploadfolder(filename):
     if 'user' in session:
         return send_from_directory(app.config['UPLOAD_FOLDER'],filename)
     return abort(404)
+
+
 if __name__ == "__main__":
-    
+    with app.app_context():
+        db.create_all()
     app.run(debug=True)
