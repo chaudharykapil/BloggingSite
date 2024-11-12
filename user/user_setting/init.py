@@ -89,7 +89,7 @@ def resetpass():
         usr = User.query.filter_by(email=session['resetdata']).first()
         if usr:
             if request.method == 'GET':
-                return render_template('changepass.html',link = link_)
+                return render_template('changepass.html')
             elif request.method == 'POST':
                 newpass = request.form.get('newpass')
                 confpass = request.form.get('confpass')
